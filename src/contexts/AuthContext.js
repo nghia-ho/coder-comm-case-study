@@ -4,7 +4,7 @@ import apiService from "../app/apiService";
 import { isValidToken } from "../utils/jwt";
 
 const initialState = {
-  isInitialized: false,
+  isInitialized: true,
   isAuthenticated: false,
   user: null,
 };
