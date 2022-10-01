@@ -11,6 +11,7 @@ import {
 
 function ActionButton({ currentUserId, targetUserId, friendship, sx }) {
   const dispatch = useDispatch();
+  // const { currentUserId, targetUserId, friendship, sx } = props.props;
 
   if (currentUserId === targetUserId) return null;
 

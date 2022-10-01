@@ -1,7 +1,6 @@
 import {
   CheckCircleOutlineRounded,
   DoNotDisturbAltRounded,
-  MarkEmailRead,
   MarkEmailReadRounded,
   PauseCircleOutlineRounded,
 } from "@mui/icons-material";

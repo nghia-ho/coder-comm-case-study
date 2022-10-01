@@ -15,9 +15,6 @@ import useAuth from "../../hooks/useAuth";
 import FriendStatus from "./FriendStatus";
 import ActionButton from "./ActionButton";
 
-// import FriendStatus from "./FriendStatus";
-// import ActionButton from "./ActionButton";
-
 function UserTable({ users }) {
   const { user } = useAuth();
 
@@ -30,8 +27,8 @@ function UserTable({ users }) {
       friendship: targetUser.friendship,
     };
     return {
-      status: <FriendStatus {...props} />,
-      action: <ActionButton {...props} />,
+      status: <FriendStatus /* props={props}*/ {...props} />,
+      action: <ActionButton /* props={props}*/ {...props} />,
     };
   };
 

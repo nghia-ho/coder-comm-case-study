@@ -1,16 +1,16 @@
-import React from "react";
-import { FTextField, FormProvider } from "../../components/form";
+import React, { useCallback } from "react";
+import { Box, Card, alpha, Stack } from "@mui/material";
+
+import { FormProvider, FTextField, FUploadImage } from "../../components/form";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Card } from "@mui/material";
-import { alpha, Box, Stack } from "@mui/system";
-import { LoadingButton } from "@mui/lab";
-import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "./postSlice";
+import { LoadingButton } from "@mui/lab";
 
 const yupSchema = Yup.object().shape({
-  content: Yup.string().required("Content is Required"),
+  content: Yup.string().required("Content is required"),
 });
 
 const defaultValues = {
@@ -19,20 +19,35 @@ const defaultValues = {
 };
 
 function PostForm() {
+  const { isLoading } = useSelector((state) => state.post);
+
   const methods = useForm({
     resolver: yupResolver(yupSchema),
     defaultValues,
   });
-
   const {
     handleSubmit,
     reset,
     setValue,
     formState: { isSubmitting },
   } = methods;
-
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.post);
+
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+
+      if (file) {
+        setValue(
+          "image",
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+    },
+    [setValue]
+  );
 
   const onSubmit = (data) => {
     dispatch(createPost(data)).then(() => reset());
@@ -55,6 +70,14 @@ function PostForm() {
               },
             }}
           />
+
+          <FUploadImage
+            name="image"
+            accept="image/*"
+            maxSize={3145728}
+            onDrop={handleDrop}
+          />
+
           <Box
             sx={{
               display: "flex",
