@@ -76,7 +76,7 @@ const slice = createSlice({
 });
 
 export const getPosts =
-  ({ userId, page = 1, limit = POSTS_PER_PAGE }) =>
+  (userId, page = 1, limit = POSTS_PER_PAGE) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
@@ -132,17 +132,22 @@ export const sendPostReaction =
     }
   };
 
-export const deletePost = (postId) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const response = await apiService.delete(`/posts/${postId}`);
-    dispatch(slice.actions.deletePostSuccess({ ...response.data, postId }));
-    toast.success("Delete Success");
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-};
+export const deletePost =
+  (postId, page = 1, limit = 3) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/posts/${postId}`);
+      dispatch(slice.actions.deletePostSuccess({ ...response.data, postId }));
+      dispatch(getCurrentUserProfile());
+      const { author } = response.data;
+      dispatch(getPosts(author, page, limit));
+      toast.success("Delete Success");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 export const modifyPost =
   ({ content, image, postId }) =>
   async (dispatch) => {

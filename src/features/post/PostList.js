@@ -16,7 +16,7 @@ const PostList = ({ userId }) => {
   const posts = currentPagePosts.map((postId) => postsById[postId]);
 
   useEffect(() => {
-    if (userId) dispatch(getPosts({ userId, page }));
+    if (userId) dispatch(getPosts(userId, page));
   }, [dispatch, userId, page]);
   return (
     <>
